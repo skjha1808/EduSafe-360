@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Earthquake VR Simulations - EduSafe 360</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1128;
+      color: #e0e0e0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      color: #007BFF;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle {
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+
+    .simulations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .simulation-card {
+      background: #1a2540;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0, 123, 255, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .simulation-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .simulation-card h3 {
+      color: #007BFF;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .simulation-card p {
+      color: #ccc;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .sketchfab-embed {
+      width: 100%;
+      height: 300px;
+      border-radius: 12px;
+      border: none;
+      background: #000;
+    }
+
+    @media (max-width: 768px) {
+      .simulations-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Earthquake VR Simulations</h1>
+      <p class="subtitle">Immersive 3D training scenarios to understand seismic events and safety responses.</p>
+    </header>
+
+    <div class="simulations-grid">
+
+      <!-- Simulation 1 -->
+      <div class="simulation-card">
+        <h3>1. Classroom Earthquake Drill</h3>
+        <p>Experience what happens during an earthquake inside a school classroom. Learn where to take cover.</p>
+       <div class="sketchfab-embed-wrapper"> <iframe title="Zagreb, DHMZ building" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/85558f45edb54bf9873a4baeb01a24a8/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/zagreb-dhmz-building-85558f45edb54bf9873a4baeb01a24a8?utm_medium=embed&utm_campaign=share-popup&utm_content=85558f45edb54bf9873a4baeb01a24a8" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Zagreb, DHMZ building </a> by <a href="https://sketchfab.com/VEKTRA?utm_medium=embed&utm_campaign=share-popup&utm_content=85558f45edb54bf9873a4baeb01a24a8" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> VEKTRA </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=85558f45edb54bf9873a4baeb01a24a8" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+      </div>
+
+      <!-- Simulation 2 -->
+      <div class="simulation-card">
+        <h3>2. Urban Collapse Scenario</h3>
+        <p>Witness structural damage in a city after a magnitude 7.0 earthquake. Identify safe evacuation paths.</p>
+        <div class="sketchfab-embed-wrapper"> <iframe title="Apartment Building on Memory Street, Izium" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/10a5de70a8d343809fd32ed5cacbe429/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/apartment-building-on-memory-street-izium-10a5de70a8d343809fd32ed5cacbe429?utm_medium=embed&utm_campaign=share-popup&utm_content=10a5de70a8d343809fd32ed5cacbe429" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Apartment Building on Memory Street, Izium </a> by <a href="https://sketchfab.com/skeiron?utm_medium=embed&utm_campaign=share-popup&utm_content=10a5de70a8d343809fd32ed5cacbe429" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> SKEIRON </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=10a5de70a8d343809fd32ed5cacbe429" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+      </div>
+
+      <!-- Simulation 3 -->
+      <div class="simulation-card">
+        <h3>3. Tsunami Aftermath (Coastal Zone)</h3>
+        <p>Explore the impact of earthquake-triggered tsunamis on coastal infrastructure and evacuation zones.</p>
+        <div class="sketchfab-embed-wrapper"> <iframe title="Earthquake and Tsunami" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/5325ba12207c4dada68345e52c35ee38/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/earthquake-and-tsunami-5325ba12207c4dada68345e52c35ee38?utm_medium=embed&utm_campaign=share-popup&utm_content=5325ba12207c4dada68345e52c35ee38" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Earthquake and Tsunami </a> by <a href="https://sketchfab.com/arloopa?utm_medium=embed&utm_campaign=share-popup&utm_content=5325ba12207c4dada68345e52c35ee38" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> arloopa </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=5325ba12207c4dada68345e52c35ee38" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Optional: Add analytics or fullscreen toggle later
+    console.log("EduSafe 360 - Earthquake VR Simulations Loaded");
+  </script>
+</body>
+</html>

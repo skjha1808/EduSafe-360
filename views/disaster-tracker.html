@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DisasterTrack: Campus Shield</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Leaflet CSS & JS for the map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Leaflet Routing Machine for drawing routes -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Custom styles to match the design */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .leaflet-routing-container {
+            display: none; /* Hide the default routing instructions panel */
+        }
+        .marker-label {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            border: 1px solid #bbb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .legend {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            color: #333;
+            border: 1px solid #ccc;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .legend-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 50%;
+            font-weight: bold;
+            color: white;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .pulse-danger {
+            animation: pulse 2s infinite;
+        }
+        /* Style for the map layer control */
+        .leaflet-control-layers {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        }
+        /* Style for selected marker for routing */
+        .marker-selected > div {
+             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.8) !important;
+             transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex h-screen">
+
+    <!-- Main Container -->
+    <div class="flex flex-1 relative">
+        <!-- Map Container -->
+        <div id="map" class="flex-1 h-full"></div>
+
+        <!-- Header -->
+        <div class="absolute top-0 left-0 w-full p-4 z-10 flex justify-between items-center pointer-events-none">
+            <div class="bg-white bg-opacity-90 p-3 rounded-lg shadow-lg">
+                <h1 class="text-xl font-bold text-gray-900">SIH 2025 DisasterTrack: Campus Shield</h1>
+            </div>
+             <div class="bg-white bg-opacity-90 p-3 rounded-lg shadow-lg flex items-center pointer-events-auto">
+                <i class="fas fa-search mr-2 text-gray-400"></i>
+                <input type="text" id="search-input" placeholder="Search by Name / ID" class="bg-transparent border-none text-gray-800 placeholder-gray-500 focus:outline-none">
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="absolute top-24 right-4 w-72 z-[1000] flex flex-col space-y-4">
+            <!-- User List -->
+            <div id="user-list-container" class="bg-white bg-opacity-95 p-4 rounded-lg shadow-lg">
+                 <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-semibold text-gray-900">Online Users</h2>
+                    <div class="flex -space-x-2" id="user-icons">
+                        <!-- User icons will be dynamically inserted here -->
+                    </div>
+                 </div>
+                 <div id="user-list" class="space-y-2 max-h-40 overflow-y-auto">
+                     <!-- User items will be dynamically inserted here -->
+                 </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="bg-white bg-opacity-95 p-4 rounded-lg shadow-lg grid grid-cols-2 gap-3">
+                <button class="bg-red-600 hover:bg-red-700 text-white p-2 rounded-md text-sm font-medium flex items-center justify-center"><i class="fas fa-bullhorn mr-2"></i>Broadcast Alert</button>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md text-sm font-medium flex items-center justify-center"><i class="fas fa-check-circle mr-2"></i>Check-in Status</button>
+                <button class="bg-gray-500 hover:bg-gray-600 text-white p-2 rounded-md text-sm font-medium flex items-center justify-center"><i class="fas fa-shield-alt mr-2"></i>Safe Zone Mgmt</button>
+                <button class="bg-gray-500 hover:bg-gray-600 text-white p-2 rounded-md text-sm font-medium flex items-center justify-center"><i class="fas fa-history mr-2"></i>Historical Data</button>
+            </div>
+            
+            <!-- Recent Alerts -->
+            <div class="bg-white bg-opacity-95 p-4 rounded-lg shadow-lg">
+                <h2 class="text-lg font-semibold text-gray-900 mb-3">Recent Alerts</h2>
+                <div id="recent-alerts" class="space-y-2 text-sm max-h-32 overflow-y-auto">
+                   <!-- Alerts will be inserted here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Alert -->
+        <div id="bottom-alert" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-black p-3 rounded-lg shadow-lg z-10 hidden items-center">
+            <i class="fas fa-exclamation-triangle mr-3"></i>
+            <span id="bottom-alert-text"></span>
+        </div>
+
+        <!-- Broadcast Message Banner -->
+        <div id="broadcast-banner" class="hidden absolute top-20 left-1/2 -translate-x-1/2 bg-red-600 text-white p-4 rounded-lg shadow-2xl z-[1500] w-full max-w-4xl text-center">
+            <h3 class="text-xl font-bold mb-2">URGENT ALERT</h3>
+            <p id="broadcast-message" class="text-lg"></p>
+            <button id="close-broadcast" class="absolute top-2 right-3 text-2xl">&times;</button>
+        </div>
+    </div>
+
+    <!-- Status Change Modal -->
+    <div id="status-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[2000]">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-900">Change Status for <span id="modal-user-name" class="text-blue-600"></span></h2>
+                <button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            </div>
+            <p class="text-gray-600 mb-6">Select a new status for the user.</p>
+            <div class="grid grid-cols-3 gap-4">
+                <button data-status="Safe" class="status-change-btn text-white bg-green-600 hover:bg-green-700 p-3 rounded-md font-medium flex items-center justify-center"><i class="fas fa-check-circle mr-2"></i>Safe</button>
+                <button data-status="Assistance" class="status-change-btn text-white bg-yellow-500 hover:bg-yellow-600 p-3 rounded-md font-medium flex items-center justify-center"><i class="fas fa-exclamation-circle mr-2"></i>Assistance</button>
+                <button data-status="Danger" class="status-change-btn text-white bg-red-600 hover:bg-red-700 p-3 rounded-md font-medium flex items-center justify-center"><i class="fas fa-exclamation-triangle mr-2"></i>Danger</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Broadcast Alert Modal -->
+    <div id="broadcast-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[2000]">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-900">Broadcast New Alert</h2>
+                <button id="close-broadcast-modal-btn" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            </div>
+            <p class="text-gray-600 mb-4">This message will be sent to all active users immediately.</p>
+            <textarea id="broadcast-input" class="w-full p-2 border border-gray-300 rounded-md" rows="4" placeholder="Enter your alert message..."></textarea>
+            <div class="flex justify-end mt-4">
+                <button id="send-broadcast-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-md">Send Alert</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, writeBatch, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // --- CONFIGURATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7nG22SGJ7WTG_H2zrqEwl10hcUkGDGe0",
+            authDomain: "sih2025-campus-shield.firebaseapp.com",
+            projectId: "sih2025-campus-shield",
+            storageBucket: "sih2025-campus-shield.appspot.com",
+            messagingSenderId: "683607939751",
+            appId: "1:683607939751:web:ca4b95a2f525467c6ad982"
+        };
+        
+        // --- INITIALIZATION ---
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            const auth = getAuth(app);
+            await signInAnonymously(auth);
+            console.log("Firebase initialized and user signed in anonymously.");
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            if (error.code === 'auth/configuration-not-found') {
+                alert("Firebase Connection Error:\n\n'Anonymous' sign-in is not enabled for this project.\n\nPlease go to your Firebase Console -> Authentication -> Sign-in method, and enable the 'Anonymous' provider, then refresh the page.");
+            } else {
+                alert("Could not connect to the database. Please check your Firebase configuration in the code.");
+            }
+        }
+
+        // --- MAP SETUP ---
+        const initialCoords = [26.853, 75.805];
+        const map = L.map('map', { zoomControl: false }).setView(initialCoords, 16); // Centered on a campus-like area in Jaipur
+        
+        const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        });
+        
+        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+
+        streetLayer.addTo(map); // Default layer
+
+        const baseMaps = {
+            "Street": streetLayer,
+            "Satellite": satelliteLayer
+        };
+
+        L.control.layers(baseMaps).addTo(map);
+        
+        // --- DATA & STATE ---
+        const markers = {};
+        let allUsersData = []; // Cache for user data for search
+        let routingControl = null;
+        let routeStartPoint = null; // For two-click routing
+        const safeZone = {
+            center: [26.8535, 75.806],
+            radius: 150 // in meters
+        };
+
+        // --- UI ELEMENTS ---
+        const userListEl = document.getElementById('user-list');
+        const userIconsEl = document.getElementById('user-icons');
+        const recentAlertsEl = document.getElementById('recent-alerts');
+        const bottomAlertEl = document.getElementById('bottom-alert');
+        const bottomAlertTextEl = document.getElementById('bottom-alert-text');
+        const searchInput = document.getElementById('search-input');
+        
+        // Modal UI Elements
+        const statusModalEl = document.getElementById('status-modal');
+        const modalUserNameEl = document.getElementById('modal-user-name');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        let selectedUserId = null;
+
+        // Broadcast UI Elements
+        const broadcastBtn = document.querySelector('button.bg-red-600');
+        const broadcastModalEl = document.getElementById('broadcast-modal');
+        const closeBroadcastModalBtn = document.getElementById('close-broadcast-modal-btn');
+        const sendBroadcastBtn = document.getElementById('send-broadcast-btn');
+        const broadcastInput = document.getElementById('broadcast-input');
+        const broadcastBanner = document.getElementById('broadcast-banner');
+        const broadcastMessageEl = document.getElementById('broadcast-message');
+        const closeBroadcastBannerBtn = document.getElementById('close-broadcast');
+
+
+        // --- MAP VISUALS ---
+        // Safe Zone Circle
+        L.circle(safeZone.center, {
+            radius: safeZone.radius,
+            color: '#22c55e',
+            fillColor: '#22c55e',
+            fillOpacity: 0.2
+        }).bindPopup("<b>Safe Zone</b>").addTo(map);
+
+        // Map Legend
+        const legend = L.control({position: 'bottomleft'});
+        legend.onAdd = function (map) {
+            const div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = `
+                <h4 class="font-bold mb-2">Legend</h4>
+                <div class="legend-item"><div class="legend-icon bg-blue-600">T</div> Teacher</div>
+                <div class="legend-item"><div class="legend-icon bg-blue-600">S</div> Student</div>
+                <br>
+                <div class="legend-item"><div class="legend-icon" style="background: #22c55e;"></div> Safe</div>
+                <div class="legend-item"><div class="legend-icon" style="background: #facc15;"></div> Assistance</div>
+                <div class="legend-item"><div class="legend-icon" style="background: #ef4444;"></div> Danger</div>
+            `;
+            return div;
+        };
+        legend.addTo(map);
+
+        // --- FUNCTIONS ---
+
+        function createCustomIcon(user) {
+            const statusColors = {
+                'Safe': '#22c55e',
+                'Assistance': '#facc15',
+                'Danger': '#ef4444'
+            };
+            const color = statusColors[user.status] || '#6b7280';
+            const pulseClass = user.status === 'Danger' ? 'pulse-danger' : '';
+            
+            return L.divIcon({
+                html: `<div class="relative flex items-center justify-center w-8 h-8 rounded-full text-white font-bold text-lg ${pulseClass}" style="background-color: ${color}; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.4);">
+                           ${user.type === 'teacher' ? 'T' : 'S'}
+                       </div>`,
+                className: '',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+        }
+
+        function updateUser(user) {
+            const icon = createCustomIcon(user);
+            const latLng = [user.location.latitude, user.location.longitude];
+
+            if (markers[user.id]) {
+                // Update existing marker
+                markers[user.id].setLatLng(latLng).setIcon(icon);
+            } else {
+                // Create new marker
+                const marker = L.marker(latLng, { icon: icon }).addTo(map);
+                marker.bindTooltip(`<div class="marker-label">${user.name} - ${user.status}</div>`, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [0, -16]
+                });
+
+                // Add two-click routing logic to all markers
+                marker.on('click', (e) => {
+                    const clickedMarker = e.target;
+                    
+                    if (routeStartPoint === clickedMarker) {
+                        // User clicked the same marker again, so cancel.
+                        clickedMarker.getElement().classList.remove('marker-selected');
+                        routeStartPoint = null;
+                        return;
+                    }
+
+                    if (!routeStartPoint) {
+                        // First click: set the start point
+                        routeStartPoint = clickedMarker;
+                        clickedMarker.getElement().classList.add('marker-selected');
+
+                        if (routingControl) {
+                            map.removeControl(routingControl);
+                            routingControl = null;
+                        }
+                    } else {
+                        // Second click: set the end point and draw the route
+                        const startLatLng = routeStartPoint.getLatLng();
+                        const endLatLng = clickedMarker.getLatLng();
+
+                        if (routingControl) {
+                            map.removeControl(routingControl);
+                        }
+
+                        routingControl = L.routing.control({
+                            waypoints: [startLatLng, endLatLng],
+                            routeWhileDragging: false,
+                            lineOptions: { styles: [{color: 'red', opacity: 1, weight: 5}] }
+                        }).addTo(map);
+
+                        // Reset state
+                        routeStartPoint.getElement().classList.remove('marker-selected');
+                        routeStartPoint = null;
+                    }
+                });
+                
+                marker.options.userData = user;
+                markers[user.id] = marker;
+            }
+             markers[user.id].options.userData = user; // Always update user data
+        }
+
+        function updateUI(users, searchTerm = '') {
+            userListEl.innerHTML = '';
+            userIconsEl.innerHTML = '';
+            let studentsOutsideSafeZone = 0;
+
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+            const filteredUsers = users.filter(user => user.name.toLowerCase().includes(lowerCaseSearchTerm));
+
+            const sortedUsers = filteredUsers.sort((a,b) => a.name.localeCompare(b.name));
+
+            sortedUsers.forEach(user => {
+                // Update user list on the right panel
+                const statusColors = { 'Safe': 'text-green-500', 'Assistance': 'text-yellow-500', 'Danger': 'text-red-500' };
+                const userItem = document.createElement('div');
+                userItem.className = 'flex items-center justify-between text-sm p-1 rounded-md hover:bg-gray-200 cursor-pointer';
+                userItem.innerHTML = `
+                    <span class="text-gray-700">${user.name}</span>
+                    <span class="font-semibold ${statusColors[user.status] || 'text-gray-500'}">${user.status}</span>
+                `;
+                // Add click listener to open status change modal
+                userItem.addEventListener('click', () => openStatusModal(user));
+
+                userListEl.appendChild(userItem);
+            });
+
+            // Icons at the top should always show all users, not filtered
+            users.forEach(user => {
+                 // Update user icons
+                const userIcon = document.createElement('img');
+                userIcon.className = 'w-8 h-8 rounded-full border-2 border-white';
+                userIcon.src = `https://i.pravatar.cc/40?u=${user.id}`;
+                userIcon.title = user.name;
+                userIconsEl.appendChild(userIcon);
+            });
+            
+            const students = users.filter(u => u.type === 'student');
+            students.forEach(student => {
+                const studentPos = L.latLng(student.location.latitude, student.location.longitude);
+                const centerPos = L.latLng(safeZone.center[0], safeZone.center[1]);
+                if (studentPos.distanceTo(centerPos) > safeZone.radius) {
+                    studentsOutsideSafeZone++;
+                }
+            });
+
+            if (studentsOutsideSafeZone > 0) {
+                bottomAlertTextEl.textContent = `${studentsOutsideSafeZone} student(s) outside Safe Zone A`;
+                bottomAlertEl.classList.remove('hidden');
+                bottomAlertEl.classList.add('flex');
+            } else {
+                 bottomAlertEl.classList.add('hidden');
+            }
+        }
+        
+        function addAlert(message, time) {
+            const alertItem = document.createElement('div');
+            alertItem.className = 'flex justify-between items-start text-gray-700';
+            alertItem.innerHTML = `
+                <p>${message}</p>
+                <span class="text-gray-500 text-xs whitespace-nowrap ml-2">${time}</span>
+            `;
+            // insert at the top
+            recentAlertsEl.insertBefore(alertItem, recentAlertsEl.firstChild);
+        }
+
+        function openStatusModal(user) {
+            selectedUserId = user.id;
+            modalUserNameEl.textContent = user.name;
+            statusModalEl.classList.remove('hidden');
+        }
+
+        function closeStatusModal() {
+            selectedUserId = null;
+            statusModalEl.classList.add('hidden');
+        }
+
+        async function changeUserStatus(newStatus) {
+            if (!selectedUserId) return;
+            const userRef = doc(db, "users", selectedUserId);
+            await updateDoc(userRef, { status: newStatus });
+            
+            // Add an alert for the status change
+            const user = markers[selectedUserId]?.options?.userData;
+            if (user) {
+                 addAlert(`${user.name}'s status changed to ${newStatus}`, new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+            }
+
+            closeStatusModal();
+        }
+
+        // --- EVENT LISTENERS ---
+        closeModalBtn.addEventListener('click', closeStatusModal);
+        document.querySelectorAll('.status-change-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const newStatus = btn.getAttribute('data-status');
+                changeUserStatus(newStatus);
+            });
+        });
+
+        // Broadcast Modal Listeners
+        broadcastBtn.addEventListener('click', () => broadcastModalEl.classList.remove('hidden'));
+        closeBroadcastModalBtn.addEventListener('click', () => broadcastModalEl.classList.add('hidden'));
+        closeBroadcastBannerBtn.addEventListener('click', () => broadcastBanner.classList.add('hidden'));
+        sendBroadcastBtn.addEventListener('click', async () => {
+            const message = broadcastInput.value.trim();
+            if (message) {
+                const broadcastRef = doc(db, "alerts", "latest_broadcast");
+                await setDoc(broadcastRef, {
+                    message: message,
+                    timestamp: new Date()
+                });
+                broadcastInput.value = '';
+                broadcastModalEl.classList.add('hidden');
+                addAlert(`Broadcast: ${message}`, new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+            }
+        });
+
+        // Search Listener
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value;
+            updateUI(allUsersData, searchTerm);
+
+            // Fly to user if there's a unique match
+            if (searchTerm.length > 2) {
+                const lowerCaseSearchTerm = searchTerm.toLowerCase();
+                const matchedUsers = allUsersData.filter(user => user.name.toLowerCase().includes(lowerCaseSearchTerm));
+                if (matchedUsers.length === 1) {
+                    const user = matchedUsers[0];
+                    if (markers[user.id]) {
+                        const latLng = markers[user.id].getLatLng();
+                        map.flyTo(latLng, 18); // Zoom in close
+                    }
+                }
+            } else if (searchTerm.length === 0) {
+                map.flyTo(initialCoords, 16); // Zoom back out
+            }
+        });
+
+        // --- DATA LISTENERS ---
+        onSnapshot(collection(db, "users"), (snapshot) => {
+            allUsersData = []; // Clear and rebuild the cache
+            snapshot.docChanges().forEach((change) => {
+                const user = { id: change.doc.id, ...change.doc.data() };
+                 if (change.type === "added" || change.type === "modified") {
+                    updateUser(user);
+                } else if (change.type === "removed") {
+                    if (markers[user.id]) {
+                        map.removeLayer(markers[user.id]);
+                        delete markers[user.id];
+                    }
+                }
+            });
+            
+            snapshot.docs.forEach(doc => allUsersData.push({id: doc.id, ...doc.data()}));
+            // Update UI based on current search term
+            updateUI(allUsersData, searchInput.value);
+        });
+
+        // Listener for broadcast alerts
+        onSnapshot(doc(db, "alerts", "latest_broadcast"), (doc) => {
+            if (doc.exists()) {
+                const data = doc.data();
+                // To avoid showing very old alerts on load, we can check the timestamp
+                const alertAge = (new Date() - data.timestamp.toDate()) / 1000; // in seconds
+                if (alertAge < 300) { // Only show if less than 5 minutes old
+                    broadcastMessageEl.textContent = data.message;
+                    broadcastBanner.classList.remove('hidden');
+                }
+            }
+        });
+
+        // --- MOCK DATA & SIMULATION ---
+
+        // Function to add mock data if the collection is empty
+        async function setupInitialData() {
+            const batch = writeBatch(db);
+            
+            // Teacher
+            const teacherRef = doc(db, "users", "teacher01");
+            batch.set(teacherRef, {
+                name: "Mr. Sharma",
+                type: "teacher",
+                status: "Safe",
+                location: { latitude: 26.853, longitude: 75.8055 }
+            });
+
+            // Students
+            const students = [
+                { id: "student01", name: "Ananya K.", status: "Assistance", location: { latitude: 26.852, longitude: 75.804 } },
+                { id: "student02", name: "Rohan V.", status: "Safe", location: { latitude: 26.8538, longitude: 75.8062 } },
+                { id: "student03", name: "Priya S.", status: "Safe", location: { latitude: 26.854, longitude: 75.8065 } },
+                { id: "student04", name: "Karan M.", status: "Danger", location: { latitude: 26.8515, longitude: 75.807 } },
+                 { id: "student05", name: "Sneha D.", status: "Safe", location: { latitude: 26.8525, longitude: 75.803 } },
+            ];
+
+            students.forEach(student => {
+                const studentRef = doc(db, "users", student.id);
+                batch.set(studentRef, student);
+            });
+
+            await batch.commit();
+            console.log("Initial user data has been set up.");
+            addAlert("All Clear: Evac drill for SecZ", "10:30 AM");
+            addAlert("Bridge Street blocked due debris", "10:29 AM");
+        }
+        
+        // This check is very basic. In a real app, you'd handle this better.
+        // For this demo, we assume if we have less than 5 users, we should set them up.
+        onSnapshot(collection(db, "users"), (snapshot) => {
+            if (snapshot.size < 5) {
+                setupInitialData();
+            }
+        }, { once: true });
+
+
+        // Simulate a student moving to demonstrate real-time updates
+        setInterval(async () => {
+            const studentIdToMove = "student04"; // Karan M.
+            const userRef = doc(db, "users", studentIdToMove);
+            
+            // Random movement
+            const newLat = 26.8515 + (Math.random() - 0.5) * 0.001;
+            const newLng = 75.807 + (Math.random() - 0.5) * 0.001;
+
+            await updateDoc(userRef, {
+                location: {
+                    latitude: newLat,
+                    longitude: newLng
+                }
+            });
+            console.log(`Simulated movement for ${studentIdToMove}`);
+        }, 5000); // every 5 seconds
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nearby Hospitals - EduSafe 360</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: #0f0f23;
+      color: white;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .map-section {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .hospitals-section {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #2c3e50;
+      border-bottom: 2px solid #00d4ff;
+      padding-bottom: 5px;
+    }
+
+    .hospital-item {
+      margin: 15px 0;
+      padding: 10px;
+      background: #f9f9f9;
+      border-left: 4px solid #00d4ff;
+    }
+
+    .hospital-name {
+      font-weight: bold;
+      color: #00aaff;
+    }
+
+    .hospital-address {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .hospital-contact {
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🏥 Nearby Hospitals & Safety Zones</h1>
+    <p>Find emergency medical help quickly during disasters.</p>
+  </header>
+
+  <div class="container">
+    <!-- Map Section -->
+    <div class="map-section">
+      <h2>📍 Interactive Map</h2>
+      <iframe 
+        src="https://www.google.com/maps/d/embed?mid=1ldxtwqbXg6LzISrQTiBj5d9t59LRzDA&usp=sharing" 
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- Hospitals List Section -->
+    <div class="hospitals-section">
+      <h2>🏥 Nearby Hospitals</h2>
+      <div class="hospital-item">
+        <div class="hospital-name">JECRC Hospital</div>
+        <div class="hospital-address">Near JECRC University, Jaipur</div>
+        <div class="hospital-contact">📞 +91-1234567890 | 📍 [View on Map](#)</div>
+        <div class="hospital-contact">
+  📞 +91-1234567890 | 
+  📍 <a href="https://maps.google.com/?q=JECRC+Hospital,+Jaipur" target="_blank">View on Map</a> |
+  🚶 <a href="https://www.google.com/maps/dir/?api=1&destination=JECRC+Hospital,+Jaipur" target="_blank">Get Directions</a>
+</div>
+      </div>
+
+      <div class="hospital-item">
+        <div class="hospital-name">Sawai Man Singh Hospital</div>
+        <div class="hospital-address">C-Scheme, Jaipur</div>
+        <div class="hospital-contact">📞 +91-9876543210 | 📍 [View on Map](#)</div>
+        <div class="hospital-contact">
+  📞 +91-1234567890 | 
+  📍 <a href="https://maps.google.com/?q=JECRC+Hospital,+Jaipur" target="_blank">View on Map</a> |
+  🚶 <a href="https://www.google.com/maps/dir/?api=1&destination=JECRC+Hospital,+Jaipur" target="_blank">Get Directions</a>
+</div>
+      </div>
+
+      <div class="hospital-item">
+        <div class="hospital-name">Mahatma Gandhi Hospital</div>
+        <div class="hospital-address">Vidyadhar Nagar, Jaipur</div>
+        <div class="hospital-contact">📞 +91-5555555555 | 📍 [View on Map](#)</div>
+        <div class="hospital-contact">
+  📞 +91-1234567890 | 
+  📍 <a href="https://maps.google.com/?q=JECRC+Hospital,+Jaipur" target="_blank">View on Map</a> |
+  🚶 <a href="https://www.google.com/maps/dir/?api=1&destination=JECRC+Hospital,+Jaipur" target="_blank">Get Directions</a>
+</div>
+      </div>
+
+      <div class="hospital-item">
+        <div class="hospital-name">Apollo Hospital</div>
+        <div class="hospital-address">Vaishali Nagar, Jaipur</div>
+        <div class="hospital-contact">📞 +91-1111111111 | 📍 [View on Map](#)</div>
+        <div class="hospital-contact">
+  📞 +91-1234567890 | 
+  📍 <a href="https://maps.google.com/?q=JECRC+Hospital,+Jaipur" target="_blank">View on Map</a> |
+  🚶 <a href="https://www.google.com/maps/dir/?api=1&destination=JECRC+Hospital,+Jaipur" target="_blank">Get Directions</a>
+</div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding: 10px; background: #0f0f23; color: white; margin-top: 20px;">
+    <p>© 2025 EduSafe 360 — Emergency Preparedness for Students & Staff</p>
+  </footer>
+</body>
+</html>

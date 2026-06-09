@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSafe 360 - Disaster Preparedness & Response</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/project.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#00d4ff">
+</head>
+<body>
+
+<nav>
+  <div class="container nav-container">
+    <a href="/" class="logo">EduSafe 360</a>
+    <ul class="nav-links"> 
+      <li><a href="#home">Home</a></li>
+      <li><a href="#ar-vr">AR/VR</a></li>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#local-support">Local Support</a></li>
+      <li><a href="#safe-places">Safe Places</a></li>
+      <li><a href="#about">About Us</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ul>
+    <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="user-actions">
+        <% if (locals.user) { %>
+            <span class="welcome-message">Welcome, <%= user.name %></span>
+            <a href="/logout" class="logout-button">Logout</a>
+        <% } else { %>
+            <a href="/login" class="login-button">Login / Sign Up</a>
+        <% } %>
+    </div>
+  </div>
+</nav>
+
+<section id="home" class="hero">
+    <div class="hero-content">
+        <h1>Prepare. Respond. Survive.</h1>
+        <p>Empowering schools and colleges with AI-driven disaster education for a safer tomorrow.</p>
+        <a href="#ar-vr" class="cta-button">Start Training Now</a>
+    </div>
+</section>
+
+<section id="ar-vr">
+    <div class="container">
+        <h2 class="section-title">AR/VR Simulations</h2>
+        <div class="ar-vr-grid">
+            <a href="/earthquake.html">
+                <div class="ar-card">
+                    <i class="fas fa-vr-cardboard"></i>
+                    <h3>Earthquake Drills</h3>
+                    <p>Immerse in realistic quake scenarios to practice duck, cover, and hold.</p>
+                    <div class="demo-image" style="background-image: url('https://images.unsplash.com/photo-1641648542439-6c002138dfdd?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGRpc2FzdGVyfGVufDB8fDB8fHww');"></div>
+                </div>
+            </a>
+            <a href="/fire.html">
+                <div class="ar-card">
+                    <i class="fas fa-fire"></i>
+                    <h3>Fire Evacuations</h3>
+                    <p>Navigate virtual flames and smoke for safe escape routes.</p>
+                    <div class="demo-image" style="background-image: url('https://plus.unsplash.com/premium_photo-1661490162121-41df314e1ef1?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGZpcmV8ZW58MHx8MHx8fDA%3D');"></div>
+                </div>
+            </a>
+            <a href="/flood.html">
+                <div class="ar-card">
+                    <i class="fas fa-tint"></i>
+                    <h3>Flood Safety</h3>
+                    <p>Learn water rescue and high-ground strategies in AR floods.</p>
+                    <div class="demo-image" style="background-image: url('https://images.unsplash.com/photo-1581059686229-de26e6ae5dc4?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZGlzYXN0ZXJ8ZW58MHx8MHx8fDA%3D');"></div>
+                </div>
+            </a> 
+        </div>
+    </div>
+</section>
+
+<section id="games">
+  <div class="container">
+    <h2 class="section-title">Disaster Simulation Games</h2>
+    <div class="games-grid">
+      <div class="game-card">
+        <h3>Bridge Constructor</h3>
+        <p>Test structural integrity by building a bridge to survive. A physics-based challenge related to earthquake preparedness.</p>
+        <button onclick="loadGame('https://www.stopdisastersgame.org/game/')">Play Now</button>
+      </div>
+      <div class="game-card">
+        <h3>Flood Runner</h3>
+        <p>The water is rising fast! Run and jump to survive the flood in this fast-paced game.</p>
+        <button onclick="loadGame('https://www.ready.gov/kids/games/data/dm-english/')">Play Now</button>
+      </div>
+      <div class="game-card">
+        <h3>Fire Truck Brigade</h3>
+        <p>Drive a fire truck, aim the hose, and put out fires to save the city's buildings.</p>
+        <button onclick="loadGame('https://awakening.legendsoflearning.com/play')">Play Now</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="game-container">
+  <iframe id="game-frame" style="width:100%; height:600px; border:none; display:none;" allow="fullscreen" sandbox="allow-scripts allow-same-origin"></iframe>
+</div>
+
+<section id="local-support">
+    <div class="container">
+        <h2 class="section-title">Local Support Network</h2>
+        <div class="support-list">
+            <a href="/hospital.html"> 
+                <div class="support-item">
+                    <div class="support-image" style="background-image: url('https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                    <h4>Nearby Hospitals</h4>
+                    <p>Real-time info on the closest medical facilities, emergency contacts, and staff directories.</p>
+                </div>
+            </a>
+            <a href="/staffandsupport.html">
+                <div class="support-item">
+                    <div class="support-image" style="background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                    <h4>Staff & Support Team</h4>
+                    <p>Access to trained responders, counselors, and on-site coordinators.</p>
+                </div>
+            </a> 
+            <a href="/emergencycontact.html">
+                <div class="support-item">
+                    <div class="support-image" style="background-image: url('https://images.unsplash.com/photo-1727925650600-06f7e6b4a2bc?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJhY2tncm91bmQlMjBpbWFnZSUyMHVybCUyMGZvciUyMGRpc2FzdGVyJTIwbWFuYWdlJTIwbWFuYWdlbWVudCUyMHByb2plY3QlMjBmb3IlMjBzY29vbCUyMGFuZCUyMGNvbGxhZ2VzJTIwc3R1ZGVudCUyMHNhZmV0eSUyMGVtZXJnZW5jeSUyMGNvbnRlY3R8ZW58MHx8MHx8fDA%3D');"></div>
+                    <h4>Emergency Contacts</h4>
+                    <p>Direct lines to local authorities, ambulances, and helplines.</p>
+                </div>
+            </a>   
+        </div>
+    </div>
+</section>
+
+<section id="safe-places">
+    <div class="container">
+        <h2 class="section-title">Safe Places & Disaster Monitoring</h2>
+        <div class="safe-grid">
+            <a href="/disaster-tracker.html">
+                <div class="safe-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Safe Zones in Campus</h3>
+                    <p>Custom GIS-mapped evacuation routes and assembly points tailored to your institution.</p>
+                    <div class="monitor-image" style="background-image: url('https://images.unsplash.com/photo-1589561253898-7685d6df5e56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                </div>
+            </a>
+            <a href="/realtimemonitoring.html">
+                <div class="safe-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Real-Time Monitoring</h3>
+                    <p>IoT sensors track fire, smoke, and seismic activity with instant alerts.</p>
+                    <div class="monitor-image" style="background-image: url('https://images.unsplash.com/photo-1581094288338-231b058b38b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80');"></div>
+                </div>
+            </a> 
+            <a href="/alertprediction.html">
+                <div class="safe-card">
+                    <i class="fas fa-crystal-ball"></i>
+                    <h3>Disaster Prediction</h3>
+                    <p>AI forecasts risks using weather data and historical patterns for proactive prep.</p>
+                    <div class="monitor-image" style="background-image: url('https://images.unsplash.com/photo-1569163139394-de44aa9a21bb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');"></div>
+                </div>
+            </a> 
+        </div>
+    </div>
+</section>
+
+<section id="safetyCheckSection">
+    <div class="sc-container">
+        <h2 class="section-title">Building Safety Approval Check</h2>
+        <p class="section-subtitle">Verify if a school or college is officially approved as a disaster-ready building in Jaipur.</p>
+        <div class="sc-search-wrapper">
+            <input type="text" id="buildingNameInput" placeholder="Enter School or College Name...">
+            <button id="verifyBtn">Verify Status</button>
+        </div>
+        <div id="resultsArea">
+            <div id="loader" class="sc-loader" style="display: none;"></div>
+            <div id="resultCard" class="sc-result-card" style="display: none;">
+                <span id="resultIcon" class="sc-icon"></span>
+                <div>
+                    <h3 id="resultBuildingName"></h3>
+                    <p id="resultStatusText"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="aiSafetyAnalyzer">
+    <div class="asa-container">
+        <div class="asa-header">
+            <h2 class="section-title">AI-Powered Hazard Analysis</h2>
+            <p class="section-subtitle">Upload an image to detect objects and receive safety instructions.</p>
+        </div>
+        <div class="asa-content">
+            <div class="asa-column" id="asa-input-column">
+                <div class="asa-upload-area" id="uploadArea">
+                    <svg class="asa-upload-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                    <p><strong>Drag & Drop an image here</strong></p>
+                    <p class="asa-small-text">or click to select a file</p>
+                    <input type="file" id="imageInput" accept="image/*" hidden>
+                </div>
+                <div class="asa-preview-container">
+                    <img id="imagePreview" src="#" alt="Image Preview">
+                </div>
+                <button id="analyzeBtn" class="asa-cta-button" disabled>Analyze Image</button>
+            </div>
+            <div class="asa-column" id="asa-output-column">
+                <div id="loading" class="asa-loading-spinner" style="display: none;"></div>
+                <div id="resultsContainer" style="display: none;">
+                    <div id="detectionResults" class="asa-results-card"></div>
+                    <div id="safetyInstructions"></div>
+                </div>
+            </div>
+        </div>
+        <div id="errorMessage" class="asa-error-message" style="display: none;"></div>
+        <div id="apiStatus" class="asa-api-status">Initializing...</div>
+    </div>
+</section>
+
+<section id="about">
+    <div class="container">
+        <h2 class="section-title">Building a Resilient Future, One Campus at a Time</h2>
+        <p class="about-mission">
+            Our mission is to democratize disaster preparedness, transforming anxiety into action through accessible, cutting-edge technology. We empower every student and educator to become a confident first responder in the face of an emergency.
+        </p>
+        <div class="about-pillars-grid">
+            <div class="pillar-card">
+                <div class="pillar-icon"><i class="fas fa-microchip"></i></div>
+                <h3>Innovation at the Core</h3>
+                <p>We leverage AI, AR, and VR to create hyper-realistic training simulations that build life-saving muscle memory, going far beyond traditional drills.</p>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-icon"><i class="fas fa-globe"></i></div>
+                <h3>Accessibility for All</h3>
+                <p>Safety is a universal right. Our platform is multi-lingual, intuitive, and designed to be accessible to everyone, regardless of technical skill.</p>
+            </div>
+            <div class="pillar-card">
+                <div class="pillar-icon"><i class="fas fa-users"></i></div>
+                <h3>Powered by Community</h3>
+                <p>We connect campuses with local authorities, creating a unified safety network that ensures a coordinated and effective response when it matters most.</p>
+            </div>
+        </div>
+        <div class="stats-container">
+            <div class="stat-item">
+                <h3>100+</h3>
+                <p>Simulated Scenarios</p>
+            </div>
+            <div class="stat-item">
+                <h3>99.9%</h3>
+                <p>Alert Delivery Rate</p>
+            </div>
+            <div class="stat-item">
+                <h3>10+</h3>
+                <p>Languages Supported</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="stay-informed">
+    <div class="container">
+        <div class="subscribe-container">
+            <h2 class="section-title">Stay Informed</h2>
+            <p class="section-subtitle">Subscribe for the latest disaster alerts, safety tips, and platform updates directly to your inbox.</p>
+            <div class="subscribe-form-container">
+                <form action="/subscribe" method="POST" class="subscribe-form" aria-label="Email subscription">
+                    <input type="email" name="email" placeholder="Enter your email for alerts" required aria-label="Email address">
+                    <button type="submit" aria-label="Subscribe to alerts">Subscribe</button>
+                </form>
+                <!-- <div id="google_translate_element" aria-label="Language translator"></div> -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <div class="container">
+        <h2 class="section-title">Get in Touch</h2>
+        <form class="contact-form">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 EduSafe 360. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Mobile menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+
+    // Placeholder form submission
+    document.querySelector('.contact-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Message sent! (This is a demo)');
+    });
+
+    // Game loader
+    const iframe = document.getElementById("game-frame");
+    function loadGame(url) {
+        iframe.src = ""; 
+        iframe.src = url;
+        iframe.style.display = "block";
+        iframe.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    // AI Safety Analyzer Logic
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!document.getElementById('aiSafetyAnalyzer')) return;
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const loading = document.getElementById('loading');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const detectionResults = document.getElementById('detectionResults');
+        const safetyInstructions = document.getElementById('safetyInstructions');
+        const errorMessage = document.getElementById('errorMessage');
+        const apiStatus = document.getElementById('apiStatus');
+        const API_KEY = 'acc_23dfbef227d7a47';
+        const API_SECRET = '8323a84cdac7daf41ac4631a4c0b5d16';
+
+        if (API_KEY !== 'YOUR_API_KEY' && API_SECRET !== 'YOUR_API_SECRET') {
+            apiStatus.textContent = '✅ Imagga API Ready';
+        } else {
+            apiStatus.textContent = '⚠️ API Credentials Missing';
+        }
+
+        uploadArea.addEventListener('click', () => imageInput.click());
+        imageInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+        ['dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+        uploadArea.addEventListener('dragover', () => uploadArea.classList.add('dragover'));
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', (e) => {
+            uploadArea.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+        analyzeBtn.addEventListener('click', analyzeImageWithImaggaAPI);
+
+        function handleFile(file) {
+            if (!file) return;
+            hideError();
+            resultsContainer.style.display = 'none';
+            if (!file.type.startsWith('image/')) {
+                showError('Please upload an image file (JPEG, PNG, etc.).');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                showError('Image size must be less than 5MB.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+                analyzeBtn.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function analyzeImageWithImaggaAPI() {
+            if (!imagePreview.src.startsWith('data:image')) {
+                showError('No image selected for analysis.');
+                return;
+            }
+            loading.style.display = 'block';
+            analyzeBtn.disabled = true;
+            resultsContainer.style.display = 'none';
+            hideError();
+            const basicAuth = btoa(`${API_KEY}:${API_SECRET}`);
+            const base64ImageData = imagePreview.src.split(',')[1];
+            const formData = new FormData();
+            formData.append('image_base64', base64ImageData);
+            try {
+                const response = await fetch('https://api.imagga.com/v2/tags', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Basic ${basicAuth}` },
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.result && data.result.tags) {
+                    const detectedLabels = data.result.tags.map(tag => tag.tag.en);
+                    displayApiResults(detectedLabels);
+                } else {
+                    showError(data.status ? data.status.text : 'An unknown Imagga API error occurred.');
+                }
+            } catch (error) {
+                showError('Network error. Could not reach the Imagga API.');
+            } finally {
+                loading.style.display = 'none';
+                analyzeBtn.disabled = false;
+            }
+        }
+
+        function displayApiResults(detectedLabels) {
+            const safetyKeywordMap = {
+                'flood': '<li><strong>Flood Detected:</strong> Evacuate to higher ground immediately. Avoid walking or driving through floodwaters.</li>',
+                'water': '<li><strong>Water Hazard:</strong> Be cautious of deep or fast-moving water. Do not touch electrical equipment if you are wet or standing in water.</li>',
+                'fire': '<li><strong>Fire/Smoke Detected:</strong> Evacuate immediately. Stay low to the ground to avoid smoke inhalation. Call emergency services.</li>',
+                'smoke': '<li><strong>Fire/Smoke Detected:</strong> Evacuate immediately. Stay low to the ground to avoid smoke inhalation. Call emergency services.</li>',
+                'earthquake': '<li><strong>Earthquake Damage Possible:</strong> Drop, Cover, and Hold On. Be cautious of aftershocks and unstable structures.</li>',
+                'car accident': '<li><strong>Traffic Incident:</strong> Keep a safe distance. Report the incident to authorities and watch for emergency vehicles.</li>'
+            };
+            detectionResults.innerHTML = `<h3>🔍 AI Detection Summary</h3><p><strong>Detected Scene Labels:</strong> ${detectedLabels.join(', ')}</p>`;
+            const safetyTips = new Set();
+            for (const label of detectedLabels) {
+                for (const keyword in safetyKeywordMap) {
+                    if (label.includes(keyword)) {
+                        safetyTips.add(safetyKeywordMap[keyword]);
+                    }
+                }
+            }
+            let safetyMsg = '';
+            const hazardDetected = safetyTips.size > 0;
+            if (hazardDetected) {
+                safetyMsg = `<ol>${[...safetyTips].join('')}</ol>`;
+            } else {
+                safetyMsg = `<ol><li>No specific hazards detected.</li><li>Always remain vigilant and follow general safety protocols.</li></ol>`;
+            }
+            safetyInstructions.innerHTML = `<div class="safety-instructions"><div class="instruction-header${hazardDetected ? '' : ' low'}"><span class="instruction-icon">${hazardDetected ? '⚠️' : '✅'}</span><h3>${hazardDetected ? 'Contextual Safety Analysis' : 'General Safety Tips'}</h3></div><div class="instruction-content">${safetyMsg}</div></div>`;
+            resultsContainer.style.display = 'block';
+        }
+        function showError(message) { errorMessage.textContent = message; errorMessage.style.display = 'block'; }
+        function hideError() { errorMessage.style.display = 'none'; }
+    });
+
+    // Building Safety Check Logic
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!document.getElementById('safetyCheckSection')) return;
+        const buildingDatabase = [
+            { name: 'Jaipur Engineering Collage and Research Centre', status: 'Approved' },
+            { name: 'Malaviya National Institute of Technology', status: 'Approved' },
+            { name: 'Jaipur National University', status: 'Approved' },
+            { name: 'St. Xavier\'s School', status: 'Not Approved' },
+            { name: 'Sawai Man Singh Medical College', status: 'Approved' },
+            { name: 'India International School', status: 'Not Approved' },
+            { name: 'Poornima University', status: 'Approved' },
+            { name: 'Maharani\'s College', status: 'Not Approved' }
+        ];
+        const verifyBtn = document.getElementById('verifyBtn');
+        const buildingInput = document.getElementById('buildingNameInput');
+        const resultCard = document.getElementById('resultCard');
+        const loader = document.getElementById('loader');
+        const resultIcon = document.getElementById('resultIcon');
+        const resultBuildingName = document.getElementById('resultBuildingName');
+        const resultStatusText = document.getElementById('resultStatusText');
+        verifyBtn.addEventListener('click', checkSafetyStatus);
+        function checkSafetyStatus() {
+            const query = buildingInput.value.trim();
+            if (!query) { alert("Please enter a building name."); return; }
+            resultCard.style.display = 'none';
+            loader.style.display = 'block';
+            verifyBtn.disabled = true;
+            setTimeout(() => {
+                const result = buildingDatabase.find(b => b.name.toLowerCase() === query.toLowerCase());
+                loader.style.display = 'none';
+                verifyBtn.disabled = false;
+                displayResult(result, query);
+            }, 1500);
+        }
+        function displayResult(result, query) {
+            resultCard.className = 'sc-result-card';
+            if (result) {
+                if (result.status === 'Approved') {
+                    resultCard.classList.add('approved');
+                    resultIcon.textContent = '✅';
+                    resultBuildingName.textContent = result.name;
+                    resultStatusText.textContent = 'This building is an APPROVED disaster-ready location.';
+                } else {
+                    resultCard.classList.add('not-approved');
+                    resultIcon.textContent = '⚠️';
+                    resultBuildingName.textContent = result.name;
+                    resultStatusText.textContent = 'This building is NOT listed as an approved disaster-ready location.';
+                }
+            } else {
+                resultCard.classList.add('not-found');
+                resultIcon.textContent = '❌';
+                resultBuildingName.textContent = `"${query}" Not Found`;
+                resultStatusText.textContent = 'This building is not in our verification database. Please check the name and try again.';
+            }
+            resultCard.style.display = 'flex';
+        }
+    });
+</script>
+
+<script> window.chtlConfig = { chatbotId: "4229847338" } </script>
+<script async data-id="4229847338" id="chtl-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
+
+<!-- Google Translate Script -->
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fire Evacuation Simulations - EduSafe 360</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1128;
+      color: #e0e0e0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      color: #007BFF;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle {
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+
+    .simulations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .simulation-card {
+      background: #1a2540;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0, 123, 255, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .simulation-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .simulation-card h3 {
+      color: #007BFF;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .simulation-card p {
+      color: #ccc;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .sketchfab-embed {
+      width: 100%;
+      height: 300px;
+      border-radius: 12px;
+      border: none;
+      background: #000;
+    }
+
+    @media (max-width: 768px) {
+      .simulations-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Fire Evacuation Simulations</h1>
+      <p class="subtitle">Train for fire emergencies with realistic 3D drills and escape route practice.</p>
+    </header>
+
+    <div class="simulations-grid">
+
+      <!-- Simulation 1 -->
+      <div class="simulation-card">
+        <h3>1. Classroom Fire Escape</h3>
+        <p>Practice evacuating a smoke-filled classroom using the “stay low and go” technique.</p>
+       <div class="sketchfab-embed-wrapper"> <iframe title="University Canteen (Wip-9) Fire Safety Objects" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/6b2369d6217541799328e7d8200cc8ab/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/university-canteen-wip-9-fire-safety-objects-6b2369d6217541799328e7d8200cc8ab?utm_medium=embed&utm_campaign=share-popup&utm_content=6b2369d6217541799328e7d8200cc8ab" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> University Canteen (Wip-9) Fire Safety Objects </a> by <a href="https://sketchfab.com/VIS-All?utm_medium=embed&utm_campaign=share-popup&utm_content=6b2369d6217541799328e7d8200cc8ab" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> VIS-All-3D </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=6b2369d6217541799328e7d8200cc8ab" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+
+      <!-- Simulation 2 -->
+      <div class="simulation-card">
+        <h3>2. Hallway Smoke Navigation</h3>
+        <p>Navigate through a dark, smoke-filled hallway using wall-touch guidance to find the nearest exit.</p>
+       <div class="sketchfab-embed-wrapper"> <iframe title="Abandoned factory building" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/0eb23859659a4112a714f9f18a52990e/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/abandoned-factory-building-0eb23859659a4112a714f9f18a52990e?utm_medium=embed&utm_campaign=share-popup&utm_content=0eb23859659a4112a714f9f18a52990e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Abandoned factory building </a> by <a href="https://sketchfab.com/Saulius.Zaura?utm_medium=embed&utm_campaign=share-popup&utm_content=0eb23859659a4112a714f9f18a52990e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Saulius.Zaura </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=0eb23859659a4112a714f9f18a52990e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+      </div>
+
+      <!-- Simulation 3 -->
+      <div class="simulation-card">
+        <h3>3. Stairwell Evacuation Under Stress</h3>
+        <p>Simulate descending a crowded, dimly lit stairwell during a fire alarm. Avoid panic, follow signage.</p>
+      <div class="sketchfab-embed-wrapper"> <iframe title="Building Fire Analysis Montreal QC" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/e5e662cea3cf4d33889c550a131d3c13/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/building-fire-analysis-montreal-qc-e5e662cea3cf4d33889c550a131d3c13?utm_medium=embed&utm_campaign=share-popup&utm_content=e5e662cea3cf4d33889c550a131d3c13" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Building Fire Analysis Montreal QC </a> by <a href="https://sketchfab.com/AirDigitalca?utm_medium=embed&utm_campaign=share-popup&utm_content=e5e662cea3cf4d33889c550a131d3c13" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Air Digital </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=e5e662cea3cf4d33889c550a131d3c13" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    console.log("EduSafe 360 - Fire Evacuation Simulations Loaded");
+  </script>
+</body>
+</html>

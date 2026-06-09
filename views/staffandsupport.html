@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - Safety System</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px;
+      flex-wrap: wrap;
+    }
+    .section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 45%;
+      min-width: 300px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    #map {
+      width: calc(100% - 40px);
+      height: 500px; /* Increased height for better route visibility */
+      margin: 0 20px;
+      border-radius: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    /* Hide the default text instructions from the routing machine */
+    .leaflet-routing-container {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Disaster Safety Contact Page</h1>
+
+  <div class="container">
+    <div class="section">
+      <h2>For Students</h2>
+      <p>If you are stuck in a disaster, share your live location.</p>
+      <button onclick="shareLocation()">📍 Share My Location</button>
+    </div>
+    <div class="section">
+      <h2>For Staff</h2>
+      <p>Click "Show Safety Places," then click any green marker to see the route from a student's location.</p>
+      <button onclick="showSafetyPlaces()">🏫 Show Safety Places</button>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+  <script>
+    let map;
+    let studentMarker;
+    let routingControl = null; // Variable to hold the routing information
+
+    // Expanded list of safe places in Jaipur
+    const safetyPlaces = [
+      { lat: 26.9124, lng: 75.7873, name: "Civil Defence Office, Collectorate" },
+      { lat: 26.9221, lng: 75.7789, name: "Sawai Man Singh Hospital" },
+      { lat: 26.8531, lng: 75.8049, name: "Jaipur Exhibition & Convention Centre" },
+      { lat: 26.9358, lng: 75.8227, name: "Govt. Community Hall, Jal Mahal" },
+      { lat: 26.8901, lng: 75.8055, name: "Rajasthan University Ground" },
+      { lat: 26.8242, lng: 75.8612, name: "Jaipur International Airport (Emergency Zone)" }
+    ];
+
+    const studentIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
+    });
+    
+    const safetyIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34],
+    });
+
+    function initMap() {
+      map = L.map('map').setView([26.9124, 75.7873], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+    }
+
+    function shareLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          const userLoc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          if (studentMarker) {
+            studentMarker.remove();
+          }
+          studentMarker = L.marker([userLoc.lat, userLoc.lng], { icon: studentIcon }).addTo(map)
+            .bindPopup("<b>Your Current Location</b>").openPopup();
+          map.setView([userLoc.lat, userLoc.lng], 15);
+        }, () => {
+          alert("Could not get your location. Please enable location access.");
+        });
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    // --- UPDATED function to show safety places and enable routing ---
+    function showSafetyPlaces() {
+      safetyPlaces.forEach(place => {
+        const safetyMarker = L.marker([place.lat, place.lng], { icon: safetyIcon }).addTo(map)
+          .bindPopup(`<b>${place.name}</b>`);
+
+        // Add a click event to each safety marker
+        safetyMarker.on('click', function() {
+          if (!studentMarker) {
+            alert("Please share a student's location first to calculate a route.");
+            return;
+          }
+
+          // If a route is already displayed, remove it
+          if (routingControl) {
+            map.removeControl(routingControl);
+          }
+
+          const studentLatLng = studentMarker.getLatLng();
+          const safetyLatLng = this.getLatLng();
+
+          // Create the routing control
+          routingControl = L.Routing.control({
+            waypoints: [
+              L.latLng(studentLatLng.lat, studentLatLng.lng),
+              L.latLng(safetyLatLng.lat, safetyLatLng.lng)
+            ],
+            routeWhileDragging: false,
+            // Hide default markers, as we have our own
+            createMarker: function() { return null; },
+            lineOptions: {
+                styles: [{color: 'red', opacity: 0.8, weight: 6}]
+            }
+          }).addTo(map);
+        });
+      });
+    }
+
+    initMap();
+  </script>
+
+</body>
+</html>

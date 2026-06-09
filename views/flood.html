@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flood Evacuation Simulations - EduSafe 360</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1128;
+      color: #e0e0e0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      color: #007BFF;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle {
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+
+    .simulations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .simulation-card {
+      background: #1a2540;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0, 123, 255, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .simulation-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .simulation-card h3 {
+      color: #007BFF;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .simulation-card p {
+      color: #ccc;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .sketchfab-embed {
+      width: 100%;
+      height: 300px;
+      border-radius: 12px;
+      border: none;
+      background: #000;
+    }
+
+    @media (max-width: 768px) {
+      .simulations-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Flood Evacuation Simulations</h1>
+      <p class="subtitle">Practice safe evacuation during flood scenarios in immersive 3D environments.</p>
+    </header>
+
+    <div class="simulations-grid">
+
+      <!-- Simulation 1 -->
+      <div class="simulation-card">
+        <h3>1. Campus Flood Drill</h3>
+        <p>Experience rising floodwaters in a school building. Learn how to evacuate to higher floors or rooftops.</p>
+        <div class="sketchfab-embed-wrapper"> <iframe title="Jiadong Flooding" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/309aca03bca744a49509cfb4069981bc/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/jiadong-flooding-309aca03bca744a49509cfb4069981bc?utm_medium=embed&utm_campaign=share-popup&utm_content=309aca03bca744a49509cfb4069981bc" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Jiadong Flooding </a> by <a href="https://sketchfab.com/animod?utm_medium=embed&utm_campaign=share-popup&utm_content=309aca03bca744a49509cfb4069981bc" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> animod </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=309aca03bca744a49509cfb4069981bc" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+      </div>
+
+      <!-- Simulation 2 -->
+      <div class="simulation-card">
+        <h3>2. Urban Street Flooding</h3>
+        <p>Navigate flooded streets and avoid submerged vehicles or electrical hazards during heavy rainfall.</p>
+      <div class="sketchfab-embed-wrapper"> <iframe title="Huntington flooding case study" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/1453958decbe4cd3979f9fff3f2eed34/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/huntington-flooding-case-study-1453958decbe4cd3979f9fff3f2eed34?utm_medium=embed&utm_campaign=share-popup&utm_content=1453958decbe4cd3979f9fff3f2eed34" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Huntington flooding case study </a> by <a href="https://sketchfab.com/AVL?utm_medium=embed&utm_campaign=share-popup&utm_content=1453958decbe4cd3979f9fff3f2eed34" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Advanced Visualization Lab - Indiana University </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=1453958decbe4cd3979f9fff3f2eed34" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+      </div>
+
+      <!-- Simulation 3 -->
+      <div class="simulation-card">
+        <h3>3. Basement Escape Scenario</h3>
+        <p>Trapped in a flooded basement? Learn how to signal for help and use emergency exits before water rises.</p>
+      <div class="sketchfab-embed-wrapper"> <iframe title="Angel Mounds flooding 3" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/bfd3ebb132c54313af4e8df027a6f737/embed"> </iframe> <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;"> <a href="https://sketchfab.com/3d-models/angel-mounds-flooding-3-bfd3ebb132c54313af4e8df027a6f737?utm_medium=embed&utm_campaign=share-popup&utm_content=bfd3ebb132c54313af4e8df027a6f737" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Angel Mounds flooding 3 </a> by <a href="https://sketchfab.com/AVL?utm_medium=embed&utm_campaign=share-popup&utm_content=bfd3ebb132c54313af4e8df027a6f737" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Advanced Visualization Lab - Indiana University </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=bfd3ebb132c54313af4e8df027a6f737" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a></p></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    console.log("EduSafe 360 - Flood Evacuation Simulations Loaded");
+  </script>
+</body>
+</html>

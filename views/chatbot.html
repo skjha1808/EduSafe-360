@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSafe 360 - Disaster Preparedness & Response</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Previous CSS styles remain unchanged */
+        /* Add these new styles for the chatbot */
+        
+        /* Chatbot Toggle Button */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        .chatbot-toggle i {
+            font-size: 24px;
+        }
+        
+        /* Chatbot Container */
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 450px;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .chatbot-container.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Chatbot Header */
+        .chatbot-header {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .chatbot-header img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+        
+        .chatbot-header h3 {
+            color: #00d4ff;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        /* Chat Messages Area */
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        /* Message Styles */
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            animation: fadeIn 0.3s ease;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            background: rgba(0, 212, 255, 0.2);
+            color: #fff;
+            border-bottom-right-radius: 5px;
+        }
+        
+        /* Chat Input Area */
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 15, 35, 0.8);
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .chat-input input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .chat-input button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #00d4ff;
+            color: white;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .chat-input button:hover {
+            background: #0099cc;
+        }
+        
+        /* Quick Suggestions */
+        .quick-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 10px 15px;
+            background: rgba(15, 15, 35, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .suggestion-chip {
+            padding: 8px 15px;
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            border-radius: 18px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .suggestion-chip:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            align-self: flex-start;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            margin-bottom: 10px;
+            color: #ccc;
+            font-size: 12px;
+        }
+        
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: #00d4ff;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            opacity: 0.6;
+            animation: typing 1.5s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .chatbot-container {
+                width: 90%;
+                right: 5%;
+                left: 5%;
+                height: 70%;
+                bottom: 80px;
+            }
+            
+            .chatbot-toggle {
+                right: 20px;
+                bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Your existing HTML content remains unchanged -->
+    
+    <!-- Add the chatbot elements at the end of the body -->
+    <div class="chatbot-toggle" id="chatbotToggle">
+        <i class="fas fa-robot"></i>
+    </div>
+    
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <div style="width: 40px; height: 40px; background: linear-gradient(45deg, #00d4ff, #0099cc); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+                <i class="fas fa-shield-alt" style="color: white; font-size: 20px;"></i>
+            </div>
+            <h3>EduSafe Assistant</h3>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                Hello! I'm EduSafe Assistant. How can I help you with disaster preparedness today?
+            </div>
+        </div>
+        
+        <div class="quick-suggestions">
+            <div class="suggestion-chip" data-query="earthquake">Earthquake Safety</div>
+            <div class="suggestion-chip" data-query="fire">Fire Safety</div>
+            <div class="suggestion-chip" data-query="emergency kit">Emergency Kit</div>
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Type your question here...">
+            <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        // Your existing JavaScript remains unchanged
+        
+        // Chatbot functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotContainer = document.getElementById('chatbotContainer');
+            const chatMessages = document.getElementById('chatMessages');
+            const userInput = document.getElementById('userInput');
+            const sendMessage = document.getElementById('sendMessage');
+            const suggestionChips = document.querySelectorAll('.suggestion-chip');
+            
+            // Toggle chatbot visibility
+            chatbotToggle.addEventListener('click', function() {
+                chatbotContainer.classList.toggle('active');
+            });
+            
+            // Send message function
+            function sendUserMessage() {
+                const message = userInput.value.trim();
+                if (message) {
+                    addMessage(message, 'user');
+                    userInput.value = '';
+                    respondToMessage(message);
+                }
+            }
+            
+            // Send message on button click
+            sendMessage.addEventListener('click', sendUserMessage);
+            
+            // Send message on Enter key
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendUserMessage();
+                }
+            });
+            
+            // Quick suggestion chips
+            suggestionChips.forEach(chip => {
+                chip.addEventListener('click', function() {
+                    const query = this.getAttribute('data-query');
+                    addMessage(query, 'user');
+                    respondToMessage(query);
+                });
+            });
+            
+            // Add message to chat
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', `${sender}-message`);
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Show typing indicator
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.classList.add('typing-indicator');
+                typingDiv.innerHTML = 'EduSafe is typing<span></span><span></span><span></span>';
+                typingDiv.id = 'typingIndicator';
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Remove typing indicator
+            function removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+            
+            // Chatbot response logic
+            function respondToMessage(message) {
+                showTypingIndicator();
+                
+                // Simulate thinking delay
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    
+                    const lowerMessage = message.toLowerCase();
+                    let response = '';
+                    
+                    // Define responses based on keywords
+                    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                        response = "Hello! How can I assist with disaster preparedness today?";
+                    } 
+                    else if (lowerMessage.includes('earthquake')) {
+                        response = "During an earthquake: DROP, COVER, and HOLD ON. Move away from windows and heavy objects. If outdoors, move to an open area. After shaking stops, check for injuries and evacuate if necessary.";
+                    }
+                    else if (lowerMessage.includes('fire')) {
+                        response = "If a fire occurs: GET OUT, STAY OUT, and CALL FOR HELP. Crawl low under smoke. Feel closed doors before opening. Use stairs, not elevators. Have working smoke alarms on every level.";
+                    }
+                    else if (lowerMessage.includes('flood')) {
+                        response = "Move to higher ground immediately during flooding. Avoid walking or driving through flood waters. Evacuate when advised by authorities. Just 6 inches of water can knock you down.";
+                    }
+                    else if (lowerMessage.includes('hurricane')) {
+                        response = "Secure your home, cover windows, and bring outdoor furniture inside. Evacuate if advised. Have a supply kit ready with food, water, and medications for at least 3 days.";
+                    }
+                    else if (lowerMessage.includes('tornado')) {
+                        response = "Go to a basement, storm cellar, or the lowest building level. Get under sturdy furniture and protect your head. If outdoors with no shelter, lie flat in a ditch and cover your head.";
+                    }
+                    else if (lowerMessage.includes('emergency kit') || lowerMessage.includes('supply')) {
+                        response = "Your emergency kit should include: water (1 gallon per person per day), non-perishable food, flashlight, batteries, first aid kit, medications, multi-tool, sanitation supplies, important documents, cell phone with charger, emergency contact information, and cash.";
+                    }
+                    else if (lowerMessage.includes('thank')) {
+                        response = "You're welcome! Stay safe and prepared.";
+                    }
+                    else if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye')) {
+                        response = "Goodbye! Remember: preparedness saves lives.";
+                    }
+                    else {
+                        response = "I specialize in disaster preparedness. You can ask me about earthquake safety, fire evacuation, emergency kits, or other disaster-related topics.";
+                    }
+                    
+                    addMessage(response, 'bot');
+                }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+            }
+            
+            // Auto-open chatbot after a delay
+            setTimeout(() => {
+                if (!chatbotContainer.classList.contains('active')) {
+                    chatbotContainer.classList.add('active');
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
