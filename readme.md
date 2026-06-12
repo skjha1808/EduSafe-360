@@ -6,14 +6,6 @@ EduSafe 360 is a comprehensive, AI-driven web platform designed to empower schoo
 
 ---
 
-## ❗ Problem Statement
-
-In an era of increasing climate uncertainty, educational institutions are on the front lines of community vulnerability. According to UNICEF, nearly half of the world's 2.2 billion children are at *extremely high risk* from the impacts of climate change and environmental shocks. Traditional disaster drills are often infrequent and fail to build critical muscle memory needed to act decisively during real emergencies.  
-
-**EduSafe 360 bridges this critical gap by transforming passive learning into active, life-saving experience.**
-
----
-
 ## ✨ Key Features
 
 - **Unified User Authentication**  
@@ -84,7 +76,7 @@ In an era of increasing climate uncertainty, educational institutions are on the
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/aashish-kumar-singh/edusafe-360.git
+   git clone https://github.com/skjha1808/edusafe-360.git
    cd edusafe-360
 
 Install dependencies:
