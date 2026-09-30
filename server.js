@@ -2,12 +2,10 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const dotenv = require('dotenv');
-const MongoStore = require('connect-mongo'); // <-- Import connect-mongo
+const MongoStore = require('connect-mongo');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const { sendEmail } = require('./services/emailService');
-
-
 
 // Load Environment Variables
 dotenv.config();
@@ -119,4 +117,3 @@ app.post('/subscribe', async (req, res) => {
         res.status(500).send("Something went wrong. Please try again later.");
     }
 });
-

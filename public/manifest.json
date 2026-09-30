@@ -2,7 +2,7 @@
   "name": "EduSafe 360 - Disaster Preparedness & Response",
   "short_name": "EduSafe 360",
   "description": "AI + AR/VR powered disaster preparedness and response training for schools and colleges.",
-  "start_url": "/project.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#00d4ff",

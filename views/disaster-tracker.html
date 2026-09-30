@@ -359,7 +359,7 @@
                             map.removeControl(routingControl);
                         }
 
-                        routingControl = L.routing.control({
+                        routingControl = L.Routing.control({
                             waypoints: [startLatLng, endLatLng],
                             routeWhileDragging: false,
                             lineOptions: { styles: [{color: 'red', opacity: 1, weight: 5}] }
@@ -593,22 +593,25 @@
 
         // Simulate a student moving to demonstrate real-time updates
         setInterval(async () => {
-            const studentIdToMove = "student04"; // Karan M.
+            const studentIdToMove = "student04";
             const userRef = doc(db, "users", studentIdToMove);
-            
-            // Random movement
+
             const newLat = 26.8515 + (Math.random() - 0.5) * 0.001;
             const newLng = 75.807 + (Math.random() - 0.5) * 0.001;
 
-            await updateDoc(userRef, {
-                location: {
-                    latitude: newLat,
-                    longitude: newLng
-                }
-            });
-            console.log(`Simulated movement for ${studentIdToMove}`);
+            try {
+                await updateDoc(userRef, {
+                    location: {
+                        latitude: newLat,
+                        longitude: newLng
+                    }
+                });
+
+                console.log(`Simulated movement for ${studentIdToMove}`);
+            } catch (error) {
+                console.error(`Failed to update ${studentIdToMove} location:`, error);
+            }
         }, 5000); // every 5 seconds
     </script>
 </body>
 </html>
-

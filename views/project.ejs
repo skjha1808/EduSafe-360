@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/project.css">
     <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/icons/icon-192.png">
     <meta name="theme-color" content="#00d4ff">
 </head>
 <body>
@@ -87,7 +88,7 @@
       <div class="game-card">
         <h3>Bridge Constructor</h3>
         <p>Test structural integrity by building a bridge to survive. A physics-based challenge related to earthquake preparedness.</p>
-        <button onclick="loadGame('https://www.stopdisastersgame.org/game/')">Play Now</button>
+        <button onclick="window.open('https://www.stopdisastersgame.org/game/', '_blank')">Play Now</button>
       </div>
       <div class="game-card">
         <h3>Flood Runner</h3>
@@ -463,7 +464,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         if (!document.getElementById('safetyCheckSection')) return;
         const buildingDatabase = [
-            { name: 'Jaipur Engineering Collage and Research Centre', status: 'Approved' },
+            { name: 'Jaipur Engineering College and Research Centre', status: 'Approved' },
             { name: 'Malaviya National Institute of Technology', status: 'Approved' },
             { name: 'Jaipur National University', status: 'Approved' },
             { name: 'St. Xavier\'s School', status: 'Not Approved' },
