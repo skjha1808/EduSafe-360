@@ -324,11 +324,8 @@
 
     // Fetch Weather from OpenWeatherMap (free tier)
     async function fetchWeather(lat, lon) {
-      const API_KEY = '74426455880a7d1226cfd4b255daf1ae';
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
-      
-      try {
-        const response = await fetch(url);
+try {
+  const response = await fetch(`/api/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`);
         if (!response.ok) throw new Error('Weather API error');
         
         const data = await response.json();
@@ -358,11 +355,8 @@
 
     // Load 7-Day Forecast
     async function loadForecast(lat, lon) {
-      const API_KEY = '74426455880a7d1226cfd4b255daf1ae';
-      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
-
-      try {
-        const response = await fetch(url);
+try {
+  const response = await fetch(`/api/forecast?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`);
         if (!response.ok) throw new Error('Forecast API error');
         
         const data = await response.json();

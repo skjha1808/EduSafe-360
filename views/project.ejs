@@ -348,14 +348,8 @@
         const safetyInstructions = document.getElementById('safetyInstructions');
         const errorMessage = document.getElementById('errorMessage');
         const apiStatus = document.getElementById('apiStatus');
-        const API_KEY = 'acc_23dfbef227d7a47';
-        const API_SECRET = '8323a84cdac7daf41ac4631a4c0b5d16';
-
-        if (API_KEY !== 'YOUR_API_KEY' && API_SECRET !== 'YOUR_API_SECRET') {
-            apiStatus.textContent = '✅ Imagga API Ready';
-        } else {
-            apiStatus.textContent = '⚠️ API Credentials Missing';
-        }
+// Credentials stay on the server. The browser only calls our own API.
+apiStatus.textContent = '✅ Imagga API Ready';
 
         uploadArea.addEventListener('click', () => imageInput.click());
         imageInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
@@ -403,15 +397,13 @@
             analyzeBtn.disabled = true;
             resultsContainer.style.display = 'none';
             hideError();
-            const basicAuth = btoa(`${API_KEY}:${API_SECRET}`);
-            const base64ImageData = imagePreview.src.split(',')[1];
-            const formData = new FormData();
-            formData.append('image_base64', base64ImageData);
-            try {
-                const response = await fetch('https://api.imagga.com/v2/tags', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Basic ${basicAuth}` },
-                    body: formData
+const base64ImageData = imagePreview.src.split(',')[1];
+
+try {
+    const response = await fetch('/api/analyze-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_base64: base64ImageData })
                 });
                 const data = await response.json();
                 if (data.result && data.result.tags) {
